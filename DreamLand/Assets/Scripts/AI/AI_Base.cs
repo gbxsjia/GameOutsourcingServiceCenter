@@ -21,22 +21,16 @@ public class AI_Base : MonoBehaviour
     }
     private void Start()
     {
-        if (currentMission != null)
-        {
-            currentMission = new Mission_MoveTo(new Vector3(-2, 0, -5));
-            currentMission.MissionStart(this, character);
-        }
-
         perception.NewItemEnterEvent += OnItemEnter;
     }
 
     private void OnItemEnter(InteractItem_Base item)
     {
-        if (currentMission==null)
-        {
-            currentMission = item.GetMission();
-            currentMission.MissionStart(this,character);
-        }
+        //if (currentMission==null)
+        //{
+        //    currentMission = item.GetMission();
+        //    currentMission.MissionStart(this,character);
+        //}
     }
 
     private void Update()

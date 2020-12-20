@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI/Mission/MoveTo")]
+
 public class Action_Moveto : AI_Action_Base
 {
     public Vector3 TargetPosition;

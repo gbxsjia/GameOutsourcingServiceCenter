@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI/Mission/UseItem")]
+
 public class Mission_UseItem : AI_Mission_Base
 {
     public InteractItem_Base TargetItem;

@@ -36,11 +36,12 @@ public class BattleManagerAI : MonoBehaviour
 
         if (needCover)
         {
-            if(Physics.Raycast(slot.transform.position + Vector3.up *CoverHeight, enemyPos-slot.transform.position, 1))
+            if(!Physics.Raycast(slot.transform.position + Vector3.up *CoverHeight, enemyPos-slot.transform.position, 1))
             {
-
+                return false;
             }
         }
+
 
         return true;
     }
@@ -67,5 +68,12 @@ public class BattleManagerAI : MonoBehaviour
             AllItems.Add(item);
         }
     }
-
+    public void SetSurround()
+    {
+        foreach(AI_Base ai in AIBrains)
+        {
+            ai.currentMission = new Mission_MoveTo(EnemyCharacters[0].transform.position, true);
+            ai.currentMission.MissionStart(ai, ai.character);
+        }
+    }
 }
