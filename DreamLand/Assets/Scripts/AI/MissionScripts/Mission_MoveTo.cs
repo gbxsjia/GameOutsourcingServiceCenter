@@ -7,24 +7,31 @@ public class Mission_MoveTo : AI_Mission_Base
 {
     public Vector3 TargetPosition;
     public bool UseNavigation;
+    public Transform FocusTarget;
 
-    public Mission_MoveTo(Vector3 position, bool useNavigation=false)
+    public Mission_MoveTo(Vector3 position, bool useNavigation=false, Transform focusTarget=null)
     {
         TargetPosition = position;
         UseNavigation = useNavigation;
+        FocusTarget = focusTarget;
     }
     public override void SetUpActions()
     {
         base.SetUpActions();
-        AddNewAction(new Action_RotateTowards(TargetPosition, 5));
+
+        if (FocusTarget != null)
+        {
+            AddNewAction(new Action_SetFocusTarget(FocusTarget));
+        }
+
         if (UseNavigation)
         {
-            AddNewAction(new Action_NavigaitionTo(TargetPosition, 1f));
+            AddNewAction(new Action_NavigaitionTo(TargetPosition, 0.4f));
         }
         else
         {
-            AddNewAction(new Action_Moveto(TargetPosition, 1.5f));
+            AddNewAction(new Action_Moveto(TargetPosition, 0.4f));
         }
-     
+   
     }
 }

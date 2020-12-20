@@ -11,13 +11,19 @@ public class Action_RotateTowards : AI_Action_Base
         targetPosition = position;
         AngleRange = angleRange;
     }
+    public override void ActionStart(AI_Mission_Base mission, AI_Base brain, Character_Base character)
+    {
+        base.ActionStart(mission, brain, character); Debug.Log("Rotate Start");
+    }
+    public override void BeforeExit()
+    {
+        base.BeforeExit(); Debug.Log("Rotate End");
+    }
     public override void ActionUpdate(AI_Base brain, Character_Base character)
     {
         base.ActionUpdate(brain, character);
-        character.SetFocusTransform(null);
-        character.RotateTowards(targetPosition);
-        Quaternion targetRotation = Quaternion.LookRotation(targetPosition - character.transform.position);
-        float angle = Quaternion.Angle(character.transform.rotation, targetRotation);
+        character.SetFocusTransform(null);        
+        float angle = character.RotateTowards(targetPosition);
         if (angle <= AngleRange)
         {
             ActionFinish();

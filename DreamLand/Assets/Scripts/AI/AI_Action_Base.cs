@@ -5,10 +5,14 @@ using UnityEngine;
 public class AI_Action_Base
 {
     public AI_Mission_Base Mission;
+    public AI_Base Brain;
+    public Character_Base Character;
 
     public virtual void ActionStart(AI_Mission_Base mission, AI_Base brain, Character_Base character)
     {
-        Mission = mission;        
+        Mission = mission;
+        Brain = brain;
+        Character = character;
     }
     public virtual void ActionInterrupt(AI_Base brain, Character_Base character)
     {

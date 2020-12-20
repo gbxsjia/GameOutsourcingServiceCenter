@@ -38,9 +38,10 @@ public class Character_Base : MonoBehaviour
     private void Update()
     {
         CheckGround();
+        UpdateVelocity();
         if (FocusTransform)
         {
-            RotateTowards(FocusTransform.position);
+            RotateToFocusTarget();
         }
     }
     private void LateUpdate()
@@ -56,8 +57,11 @@ public class Character_Base : MonoBehaviour
         if (Direction != Vector3.zero)
         {
             LastMoveDirection = Direction;           
-        }
-        Vector3 v = Vector3.MoveTowards(rb.velocity, Direction * WalkSpeed, MoveAcceleration);
+        }        
+    }
+    public void UpdateVelocity()
+    {
+        Vector3 v = Vector3.MoveTowards(rb.velocity, InputDirection * WalkSpeed, MoveAcceleration);
         v.y = rb.velocity.y;
         rb.velocity = v;
     }
@@ -96,15 +100,24 @@ public class Character_Base : MonoBehaviour
         animator.SetBool("onGround", onGround);
     }
 
-    public void RotateTowards(Vector3 targetPos)
-    {     
+    public float RotateTowards(Vector3 targetPos)
+    {
+        Vector3 direction = targetPos - transform.position;
+        direction.y = 0;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
         if (!FocusTransform)
         {
-            Vector3 direction = targetPos - transform.position;
-            direction.y = 0;
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
         }
+        return Quaternion.Angle(transform.rotation, targetRotation);
+    }
+    public void RotateToFocusTarget()
+    {
+        Vector3 direction = FocusTransform.position - transform.position;
+        direction.y = 0;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
     }
     public void SetFocusTransform(Transform target)
     {

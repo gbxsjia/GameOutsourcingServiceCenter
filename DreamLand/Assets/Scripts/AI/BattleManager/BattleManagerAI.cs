@@ -36,13 +36,14 @@ public class BattleManagerAI : MonoBehaviour
 
         if (needCover)
         {
-            if(!Physics.Raycast(slot.transform.position + Vector3.up *CoverHeight, enemyPos-slot.transform.position, 1))
+            if(!Physics.Raycast(slot.transform.position + Vector3.up *CoverHeight, enemyPos + Vector3.up * CoverHeight - slot.transform.position, 1))
             {
+                Debug.DrawLine(slot.transform.position + Vector3.up * CoverHeight, enemyPos + Vector3.up * CoverHeight, Color.red, 10f);
                 return false;
             }
         }
 
-
+        Debug.DrawLine(slot.transform.position, slot.transform.position + Vector3.up , Color.blue, 10f);
         return true;
     }
 
@@ -62,7 +63,7 @@ public class BattleManagerAI : MonoBehaviour
             }
             return;
         }
-        InteractItem_Base item = other.GetComponent<InteractItem_Base>();
+        InteractItem_Base item = other.GetComponentInParent<InteractItem_Base>();
         if (item)
         {
             AllItems.Add(item);
@@ -70,10 +71,45 @@ public class BattleManagerAI : MonoBehaviour
     }
     public void SetSurround()
     {
+        PossibleSlots.Clear();
+        foreach(InteractItem_Base item in AllItems)
+        {
+            foreach(Transform slot in item.InteractSlots)
+            {
+                if (IsSlotValid(slot, true, true, 3, 10))
+                {
+                    PossibleSlots.Add(slot);
+                }
+            }
+        }
+
         foreach(AI_Base ai in AIBrains)
         {
-            ai.currentMission = new Mission_MoveTo(EnemyCharacters[0].transform.position, true);
-            ai.currentMission.MissionStart(ai, ai.character);
+            Transform t = GetNearestSlot(ai.transform.position);
+            if (t != null)
+            {
+                Debug.DrawLine(t.position, t.position + Vector3.up, Color.green, 10f);
+                PossibleSlots.Remove(t);
+                ai.currentMission = new Mission_MoveTo(t.position, true, EnemyCharacters[0].transform);
+                ai.currentMission.MissionStart(ai, ai.character);
+            }
+          
         }
     }
+    public Transform GetNearestSlot(Vector3 origin)
+    {
+        float minDis = Mathf.Infinity;
+        Transform result = null;
+        foreach(Transform slot in PossibleSlots)
+        {
+            float newDis = Vector3.Distance(slot.position, origin);
+            if (newDis <= minDis)
+            {
+                result = slot;
+                minDis = newDis;
+            }
+        }
+        return result;
+    }
+
 }

@@ -11,20 +11,27 @@ public class AIPerception : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        InteractItem_Base item = other.GetComponent<InteractItem_Base>();
+        InteractItem_Base item = other.GetComponentInParent<InteractItem_Base>();
         if (item)
         {
-            ItemsInSight.Add(item);
-            NewItemEnterEvent(item);
+            ItemsInSight.Add(item); 
+            if (NewItemEnterEvent != null)
+            {
+                NewItemEnterEvent(item);
+            }
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        InteractItem_Base item = other.GetComponent<InteractItem_Base>();
+        InteractItem_Base item = other.GetComponentInParent<InteractItem_Base>();
         if (item)
         {
             ItemsInSight.Remove(item);
-            ItemExitEvent(item);
+            if (ItemExitEvent!=null)
+            {
+                ItemExitEvent(item);
+            }
+       
         }
     }
 }
