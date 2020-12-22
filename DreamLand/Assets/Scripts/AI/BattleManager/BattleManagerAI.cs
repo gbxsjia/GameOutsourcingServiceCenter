@@ -16,15 +16,6 @@ public class BattleManagerAI : MonoBehaviour
     public float CoverHeight;
     public float EyeHeight;
 
-    public void UpdateSlots()
-    {
-        PossibleSlots.Clear();
-        foreach (InteractItem_Base item in AllItems)
-        {
-            PossibleSlots.AddRange(item.InteractSlots);
-        }
-    }
-
     public bool IsSlotValid(Transform slot, bool needCover, bool canSeeEnemy, float minDistance, float maxDistance)
     {
         Vector3 enemyPos = EnemyCharacters[0].transform.position;
@@ -36,10 +27,15 @@ public class BattleManagerAI : MonoBehaviour
 
         if (needCover)
         {
-            if(!Physics.Raycast(slot.transform.position + Vector3.up *CoverHeight, enemyPos + Vector3.up * CoverHeight - slot.transform.position, 1))
+            RaycastHit hit;
+            if(!Physics.Raycast(slot.transform.position + Vector3.up *CoverHeight, enemyPos + Vector3.up * CoverHeight - slot.transform.position, out hit, 1))
             {
-                Debug.DrawLine(slot.transform.position + Vector3.up * CoverHeight, enemyPos + Vector3.up * CoverHeight, Color.red, 10f);
+                //Debug.DrawLine(slot.transform.position + Vector3.up * CoverHeight, (enemyPos + Vector3.up * CoverHeight - slot.transform.position).normalized*1 + slot.transform.position + Vector3.up * CoverHeight, Color.red, 10f);
                 return false;
+            }
+            else
+            {
+                //Debug.DrawLine(slot.transform.position + Vector3.up * CoverHeight, hit.point, Color.green, 10f);
             }
         }
 
@@ -64,7 +60,7 @@ public class BattleManagerAI : MonoBehaviour
             return;
         }
         InteractItem_Base item = other.GetComponentInParent<InteractItem_Base>();
-        if (item)
+        if (item && !AllItems.Contains(item))
         {
             AllItems.Add(item);
         }
