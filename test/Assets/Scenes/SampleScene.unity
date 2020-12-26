@@ -888,8 +888,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 905464583}
-  ForwardForce: 900
-  sidewaysForce: 600
+  MaxForwardSpeed: 10
+  ForwardAcceleration: 10
+  MaxHorizontalSpeed: 6
+  HorizontalAcceleration: 20
+  JumpForce: 300
+  GroundContactCount: 0
 --- !u!114 &905464585
 MonoBehaviour:
   m_ObjectHideFlags: 0

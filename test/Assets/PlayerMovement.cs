@@ -4,22 +4,47 @@ public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody rb;
 
-    public float ForwardForce = 2000f;
-    public float sidewaysForce = 500f;
+    public float MaxForwardSpeed;
+    public float ForwardAcceleration;
+    public float MaxHorizontalSpeed;
+    public float HorizontalAcceleration;
+
+    public float JumpForce;
+    public int GroundContactCount;
+
+
 
     void FixedUpdate()
     {
-        rb.AddForce(0, 0, ForwardForce * Time.deltaTime);
+        Vector3 newvelocity = rb.velocity;
 
-        if ( Input.GetKey("d")) 
-        {
-            rb.AddForce(sidewaysForce * Time.deltaTime, 0, 0);
-        }
+        //左右
+        float Inputx = Input.GetAxis("Horizontal");
+        newvelocity.x = Mathf.MoveTowards(newvelocity.x, Inputx * MaxHorizontalSpeed, HorizontalAcceleration * Time.fixedDeltaTime);
+       
+        //前进
+        newvelocity.z = Mathf.MoveTowards(newvelocity.z, MaxForwardSpeed, ForwardAcceleration*Time.fixedDeltaTime);
 
-        if (Input.GetKey("a"))
+        rb.velocity = newvelocity;
+
+        //跳跃
+        if (Input.GetKeyDown(KeyCode.Space)) 
         {
-            rb.AddForce(-sidewaysForce * Time.deltaTime, 0, 0);
+            if (GroundContactCount > 0)
+            {
+                rb.AddForce(new Vector3(0, JumpForce, 0));
+            }
         }
+    }
+
+    //跳跃碰撞检测
+    private void OnCollisionEnter(Collision collision)
+    {
+        GroundContactCount++;
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        GroundContactCount--;
     }
 }
  
