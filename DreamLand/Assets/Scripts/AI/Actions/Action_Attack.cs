@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon_Base : MonoBehaviour
+public class Action_Attack : AI_Action_Base
 {
-   public virtual void Attack()
-    {
-
-    }
+    
 }
