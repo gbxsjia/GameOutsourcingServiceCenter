@@ -60,7 +60,7 @@ public class Character_Base : MonoBehaviour
 
     public void Attack()
     {
-        Weapon.Attack();
+        Weapon.AttackStart();
     }
     #region Abilities
 
@@ -141,12 +141,12 @@ public class Character_Base : MonoBehaviour
     {
         animator.CrossFade(animationName, 0.1f);
     }
-    public void StartBehaviour(string animName, float duration, BehaviourType type)
+    public Behaviour StartBehaviour(string animName, float duration, BehaviourType type, float[] eventTiming)
     {
-        Behaviour newBehaviour = new Behaviour(animName, duration, type);
-        StartBehaviour(newBehaviour);
+        Behaviour newBehaviour = new Behaviour(animName, duration, type, eventTiming);
+        return StartBehaviour(newBehaviour);
     }
-    public void StartBehaviour(Behaviour behaviour)
+    public Behaviour StartBehaviour(Behaviour behaviour)
     {
         if (currentBehaviour != null)
         {
@@ -154,6 +154,7 @@ public class Character_Base : MonoBehaviour
         }
         currentBehaviour = behaviour;
         currentBehaviour.StartBehaviour(this);
+        return behaviour;
     }
     public void InterruptBehaviour()
     {

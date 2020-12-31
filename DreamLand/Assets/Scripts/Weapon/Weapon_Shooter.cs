@@ -13,9 +13,9 @@ public class Weapon_Shooter :Weapon_Base
     private float FireInterval;
     private float CoolDownTime;
 
-    public override void Attack()
+    public override void AttackStart()
     {
-        base.Attack();
+        base.AttackStart();
         StartShooting(3);
     }
 
