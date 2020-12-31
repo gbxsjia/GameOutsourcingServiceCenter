@@ -44,7 +44,7 @@ public class Action_NavigaitionTo : AI_Action_Base
         if (path.corners.Length >= 2)
         {
             character.Move(path.corners[1] - character.transform.position);
-            if (Vector3.Distance(character.transform.position, path.corners[1]) <= 0.05f)
+            if (Vector3.Distance(character.transform.position, path.corners[1]) <= 0.1f)
             {
                 agent.CalculatePath(TargetPosition, path);
             }

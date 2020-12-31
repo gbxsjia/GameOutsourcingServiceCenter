@@ -19,18 +19,11 @@ public class AI_Base : MonoBehaviour
         character = target.GetComponent<Character_Base>();
         state = target.GetComponent<CharacterState_Base>();
     }
-    private void Start()
-    {
-        perception.NewItemEnterEvent += OnItemEnter;
-    }
 
-    private void OnItemEnter(InteractItem_Base item)
+    public void StartNewMission(AI_Mission_Base mission)
     {
-        //if (currentMission==null)
-        //{
-        //    currentMission = item.GetMission();
-        //    currentMission.MissionStart(this,character);
-        //}
+        currentMission = mission;
+        currentMission.MissionStart(this, character);
     }
 
     private void Update()
@@ -44,6 +37,7 @@ public class AI_Base : MonoBehaviour
     public void MissionEnd(AI_Mission_Base mission, bool result)
     {
         currentMission = null;
+        StartNewMission(new Mission_SimpleAttack(10));
     }
 
 

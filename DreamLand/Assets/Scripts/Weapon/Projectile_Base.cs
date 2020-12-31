@@ -12,7 +12,7 @@ public class Projectile_Base : MonoBehaviour
     private void Start()
     {
         timer = Time.time;
-        rb.velocity = Vector3.forward * Speed;
+        rb.velocity = transform.forward * Speed;
     }
     private void OnTriggerEnter(Collider other)
     {

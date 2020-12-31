@@ -84,10 +84,8 @@ public class BattleManagerAI : MonoBehaviour
             Transform t = GetNearestSlot(ai.transform.position);
             if (t != null)
             {
-                Debug.DrawLine(t.position, t.position + Vector3.up, Color.green, 10f);
                 PossibleSlots.Remove(t);
-                ai.currentMission = new Mission_MoveTo(t.position, true, EnemyCharacters[0].transform);
-                ai.currentMission.MissionStart(ai, ai.character);
+                ai.StartNewMission(new Mission_MoveTo(t.position, true, EnemyCharacters[0].transform));
             }
           
         }

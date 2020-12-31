@@ -26,6 +26,11 @@ public class Character_Base : MonoBehaviour
     public Weapon_Base Weapon;
 
     public int Camp;
+
+    // 事件
+    public event System.Action<Behaviour> BehaviourFinishEvent;
+    public event System.Action<Behaviour> BehaviourInterruptEvent;
+    public event System.Action<Behaviour> BehaviourEndEvent;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -58,9 +63,9 @@ public class Character_Base : MonoBehaviour
         UpdateAnimation();
     }
 
-    public void Attack()
+    public void AttackCommand()
     {
-        Weapon.AttackStart();
+        Weapon.AttackCommand();
     }
     #region Abilities
 
@@ -158,11 +163,30 @@ public class Character_Base : MonoBehaviour
     }
     public void InterruptBehaviour()
     {
-
+        Behaviour lastBehaviour = currentBehaviour;
+        currentBehaviour.BehaviourInterrpt();
+        currentBehaviour = null;
+        if (BehaviourInterruptEvent != null)
+        {
+            BehaviourInterruptEvent(lastBehaviour);
+        }
+        if (BehaviourEndEvent != null)
+        {
+            BehaviourEndEvent(lastBehaviour);
+        }
     }
     public void FinishBehaviour()
     {
+        Behaviour lastBehaviour= currentBehaviour;
         currentBehaviour = null;
+        if (BehaviourFinishEvent != null)
+        {
+            BehaviourFinishEvent(lastBehaviour);
+        }
+        if (BehaviourEndEvent != null)
+        {
+            BehaviourEndEvent(lastBehaviour);
+        }
     }
     #endregion
 
