@@ -6,6 +6,7 @@ public class Character_Base : MonoBehaviour
 {
     private Rigidbody rb;
 
+    [Header("能力")]
     public float WalkSpeed;
     public float SprintSpeed;
     public float MoveAcceleration;
@@ -13,12 +14,16 @@ public class Character_Base : MonoBehaviour
     public Vector3 InputDirection;
     public float JumpForce;
 
+    // 状态
     private bool onGround;
+    private Behaviour currentBehaviour;
 
     public Animator animator;
 
     public float RotationSpeed;
     private Transform FocusTransform;
+
+    public Weapon_Base Weapon;
 
     public int Camp;
     private void Awake()
@@ -43,10 +48,19 @@ public class Character_Base : MonoBehaviour
         {
             RotateToFocusTarget();
         }
+        if (currentBehaviour!=null)
+        {
+            currentBehaviour.UpdateBehaviour(this);
+        }
     }
     private void LateUpdate()
     {
         UpdateAnimation();
+    }
+
+    public void Attack()
+    {
+        Weapon.AttackStart();
     }
     #region Abilities
 
@@ -126,6 +140,29 @@ public class Character_Base : MonoBehaviour
     public void PlayAnimation(string animationName)
     {
         animator.CrossFade(animationName, 0.1f);
+    }
+    public Behaviour StartBehaviour(string animName, float duration, BehaviourType type, float[] eventTiming)
+    {
+        Behaviour newBehaviour = new Behaviour(animName, duration, type, eventTiming);
+        return StartBehaviour(newBehaviour);
+    }
+    public Behaviour StartBehaviour(Behaviour behaviour)
+    {
+        if (currentBehaviour != null)
+        {
+            InterruptBehaviour();
+        }
+        currentBehaviour = behaviour;
+        currentBehaviour.StartBehaviour(this);
+        return behaviour;
+    }
+    public void InterruptBehaviour()
+    {
+
+    }
+    public void FinishBehaviour()
+    {
+        currentBehaviour = null;
     }
     #endregion
 
