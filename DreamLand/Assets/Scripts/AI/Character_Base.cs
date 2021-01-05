@@ -58,6 +58,7 @@ public class Character_Base : MonoBehaviour
             currentBehaviour.UpdateBehaviour(this);
         }
     }
+
     private void LateUpdate()
     {
         UpdateAnimation();

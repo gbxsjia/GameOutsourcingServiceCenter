@@ -9,11 +9,23 @@ public class AI_Base : MonoBehaviour
     public AIPerception perception;
 
     public AI_Mission_Base currentMission;
+    public AI_Mission_Base defaultMission;
 
     private void Awake()
     {
         PossessCharacter(gameObject);
     }
+
+    private void Start()
+    {
+   
+    }
+    public void StartDefaultMission()
+    {
+        defaultMission = new Mission_GetResource(InteractItemType.Resource, InteractItemType.House);
+        StartNewMission(defaultMission);
+    }
+
     public void PossessCharacter(GameObject target)
     {
         character = target.GetComponent<Character_Base>();
@@ -37,7 +49,6 @@ public class AI_Base : MonoBehaviour
     public void MissionEnd(AI_Mission_Base mission, bool result)
     {
         currentMission = null;
-        StartNewMission(new Mission_SimpleAttack(10));
     }
 
 

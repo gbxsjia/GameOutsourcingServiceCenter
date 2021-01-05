@@ -20,6 +20,7 @@ public class Action_Moveto : AI_Action_Base
         character.RotateTowards(TargetPosition);
         if (Vector3.Distance(character.transform.position, TargetPosition) <= Distance)
         {
+            character.Move(Vector3.zero);
             ActionFinish();
         }
     }

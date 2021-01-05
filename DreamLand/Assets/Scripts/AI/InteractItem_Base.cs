@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InteractItem_Base : MonoBehaviour
 {
+    public InteractItemType type;
+
     public Transform[] InteractSlots;
     public bool[] SlotState;
     public Character_Base[] SlotUsers;
@@ -18,6 +20,10 @@ public class InteractItem_Base : MonoBehaviour
             SlotState[i] = true;
         }
         SlotUsers = new Character_Base[InteractSlots.Length];
+    }
+    private void Start()
+    {
+        InteractManager.instance.RegistItem(this);
     }
 
     public event System.Action<Character_Base> InteractStartEvent;
@@ -63,4 +69,10 @@ public class InteractItem_Base : MonoBehaviour
         AI_Mission_Base newMission = new Mission_UseItem(this,Duration);
         return newMission;
     }
+}
+public enum InteractItemType
+{
+    House,
+    Resource,
+    End
 }

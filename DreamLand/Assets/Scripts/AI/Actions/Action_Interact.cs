@@ -24,24 +24,18 @@ public class Action_Interact : AI_Action_Base
             Item.InteractStart(character);
             timer = Duration;
             isInteracting = true;
-            character.PlayAnimation(AnimationName);
+            Behaviour b= character.StartBehaviour(new Behaviour(AnimationName, Duration, BehaviourType.Interact, new float[] { 0.5f }));
+            b.BehaviourFinishEvent += OnBehaviourFinish;
+
         }
     }
 
-    public override void ActionUpdate(AI_Base brain, Character_Base character)
+    private void OnBehaviourFinish()
     {
-        base.ActionUpdate(brain, character);
-        if (isInteracting)
+        if (Item)
         {
-            timer -= Time.deltaTime;
-            if (timer <= 0 )
-            {
-                if (Item)
-                {
-                    Item.InteractEnd(character);
-                }
-                ActionFinish();
-            }
+            Item.InteractEnd(Character);
         }
+        ActionFinish();
     }
 }

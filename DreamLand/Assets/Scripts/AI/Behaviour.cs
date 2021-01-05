@@ -69,5 +69,6 @@ public class Behaviour
 public enum BehaviourType
 {
     Attack,
+    Interact,
     Stun,
 }
