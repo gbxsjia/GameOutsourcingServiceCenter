@@ -6,21 +6,13 @@ public class InteractItem_Base : MonoBehaviour
 {
     public InteractItemType type;
 
-    public Transform[] InteractSlots;
-    public bool[] SlotState;
-    public Character_Base[] SlotUsers;
+    public Transform InteractSlot;
+    public Transform InteractWaitingPlace;
+    public bool SlotState;
+    public Character_Base SlotUser;
 
     public float Duration;
 
-    private void Awake()
-    {
-        SlotState = new bool[InteractSlots.Length];
-        for (int i = 0; i < InteractSlots.Length; i++)
-        {
-            SlotState[i] = true;
-        }
-        SlotUsers = new Character_Base[InteractSlots.Length];
-    }
     private void Start()
     {
         InteractManager.instance.RegistItem(this);
@@ -34,35 +26,29 @@ public class InteractItem_Base : MonoBehaviour
         {
             InteractStartEvent(character);
         }
+        SlotState = false;
+        SlotUser = character;
         return true;
     }
-    public virtual void InteractEnd(Character_Base character)
+    public virtual void InteractEnd(Character_Base character, bool success=true)
     {
         if (InteractEndEvent != null)
         {
             InteractEndEvent(character);
         }
-        for (int i = 0; i < InteractSlots.Length; i++)
+        if (SlotUser == character)
         {
-            if (SlotUsers[i] == character)
-            {
-                SlotState[i] = true;
-                SlotUsers[i] = null;
-            }
+            SlotState = true;
+            SlotUser = null;
         }
     }
-    public Transform GetSlot(Character_Base character)
+    public Transform GetSlot()
     {
-        for (int i = 0; i < InteractSlots.Length; i++)
-        {
-            if (SlotState[i])
-            {
-                SlotState[i] = false;
-                SlotUsers[i] = character;
-                return InteractSlots[i];
-            }
-        }
-        return null;
+        return InteractSlot;
+    }
+    public Transform GetWaitingPlace()
+    {
+        return InteractWaitingPlace;
     }
     public virtual AI_Mission_Base GetMission()
     {

@@ -24,4 +24,10 @@ public class Action_Moveto : AI_Action_Base
             ActionFinish();
         }
     }
+
+    public override void BeforeExit()
+    {
+        base.BeforeExit();
+        Character.Move(Vector3.zero);
+    }
 }

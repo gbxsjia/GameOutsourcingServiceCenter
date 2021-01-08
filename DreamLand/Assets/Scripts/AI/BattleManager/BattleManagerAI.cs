@@ -68,15 +68,14 @@ public class BattleManagerAI : MonoBehaviour
     public void SetSurround()
     {
         PossibleSlots.Clear();
-        foreach(InteractItem_Base item in AllItems)
+        foreach (InteractItem_Base item in AllItems)
         {
-            foreach(Transform slot in item.InteractSlots)
+
+            if (IsSlotValid(item.InteractSlot, true, true, 3, 10))
             {
-                if (IsSlotValid(slot, true, true, 3, 10))
-                {
-                    PossibleSlots.Add(slot);
-                }
+                PossibleSlots.Add(item.InteractSlot);
             }
+
         }
 
         foreach(AI_Base ai in AIBrains)

@@ -34,6 +34,10 @@ public class AI_Base : MonoBehaviour
 
     public void StartNewMission(AI_Mission_Base mission)
     {
+        if (currentMission != null)
+        {
+            currentMission.MissionAbort(this, character, mission);
+        }
         currentMission = mission;
         currentMission.MissionStart(this, character);
     }

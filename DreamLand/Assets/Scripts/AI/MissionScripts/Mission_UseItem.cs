@@ -16,11 +16,11 @@ public class Mission_UseItem : AI_Mission_Base
     public override void SetUpActions()
     {
         base.SetUpActions();
-        Transform slot= TargetItem.GetSlot(ownerCharacter);
-        if (slot)
+        Transform place= TargetItem.GetWaitingPlace();
+        if (place)
         {
-            AddNewAction(new Action_Moveto(slot.position, 0.5f));
-            AddNewAction(new Action_RotateTowards(slot.position + slot.forward, 1f));
+            AddNewAction(new Action_NavigaitionTo(place.position, 0.5f));
+            AddNewAction(new Action_RotateTowards(place.position + place.forward, 1f));
             AddNewAction(new Action_Interact(TargetItem, Duration));
         }
     }

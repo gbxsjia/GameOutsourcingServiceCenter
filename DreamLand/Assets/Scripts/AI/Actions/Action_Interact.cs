@@ -7,7 +7,6 @@ public class Action_Interact : AI_Action_Base
     public InteractItem_Base Item;
     public float Duration;
     public string AnimationName;
-
     private float timer;
     private bool isInteracting;
     public Action_Interact(InteractItem_Base item, float duration, string animationName="Interact") 
@@ -24,11 +23,12 @@ public class Action_Interact : AI_Action_Base
             Item.InteractStart(character);
             timer = Duration;
             isInteracting = true;
-            Behaviour b= character.StartBehaviour(new Behaviour(AnimationName, Duration, BehaviourType.Interact, new float[] { 0.5f }));
+            Behaviour b= character.StartBehaviour(new Behaviour(AnimationName, Duration, BehaviourType.Interact, new float[] {}));
             b.BehaviourFinishEvent += OnBehaviourFinish;
-
         }
     }
+
+
 
     private void OnBehaviourFinish()
     {
@@ -37,5 +37,16 @@ public class Action_Interact : AI_Action_Base
             Item.InteractEnd(Character);
         }
         ActionFinish();
+    }
+    public override void ActionInterrupt(AI_Base brain, Character_Base character)
+    {
+        base.ActionInterrupt(brain, character);
+        if (isInteracting)
+        {
+            if (Item)
+            {
+                Item.InteractEnd(Character);
+            }
+        }
     }
 }

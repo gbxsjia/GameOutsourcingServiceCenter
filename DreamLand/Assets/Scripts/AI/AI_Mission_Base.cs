@@ -36,7 +36,7 @@ public class AI_Mission_Base
 
     public virtual void MissionAbort(AI_Base brain, Character_Base character, AI_Mission_Base newMission)
     {
-
+        currentAction.ActionInterrupt(brain, character);
     }
     public virtual void ActionStart()
     {
@@ -60,5 +60,9 @@ public class AI_Mission_Base
     public void AddNewAction(AI_Action_Base action)
     {
         ActionList.Add(action);
+    }
+    public AI_Action_Base GetCurrentAction()
+    {
+        return currentAction;
     }
 }
