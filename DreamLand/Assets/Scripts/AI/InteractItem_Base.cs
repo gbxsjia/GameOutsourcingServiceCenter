@@ -53,6 +53,14 @@ public class InteractItem_Base : MonoBehaviour
             SlotUser = character;
         }
     }
+    public void ReleaseSlot(Character_Base character)
+    {
+        if (SlotUser == character)
+        {
+            SlotState = true;
+            SlotUser = null;
+        }
+    }
     public bool CanInteract()
     {
         return SlotState;

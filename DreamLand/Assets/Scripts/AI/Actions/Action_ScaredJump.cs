@@ -15,7 +15,7 @@ public class Action_ScaredJump : AI_Action_Base
     public override void ActionStart(AI_Mission_Base mission, AI_Base brain, Character_Base character)
     {
         base.ActionStart(mission, brain, character);
-        character.JumpStart(character.transform.position, Duration, 0.5f, "");
+        character.JumpStart(character.transform.position, Duration, 0.75f, "");
     }
 
     public override void ActionUpdate(AI_Base brain, Character_Base character)

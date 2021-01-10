@@ -7,6 +7,8 @@ public class Mission_GetResource : AI_Mission_Base
     InteractItemType ResourceType;
     InteractItemType Storage;
 
+    InteractItem_Base TargetItem;
+    InteractItem_Base HouseItem;
     public Mission_GetResource(InteractItemType resourceType,InteractItemType storage)
     {
         ResourceType = resourceType;
@@ -21,7 +23,6 @@ public class Mission_GetResource : AI_Mission_Base
         switch (AchiveIndex)
         {
             case 0:
-                InteractItem_Base TargetItem = null;
                 float minDistance = Mathf.Infinity;
                 foreach (InteractItem_Base item in InteractManager.instance.GetItemList(ResourceType))
                 {
@@ -45,8 +46,7 @@ public class Mission_GetResource : AI_Mission_Base
                 }
 
                 break;
-            case 1:
-                InteractItem_Base HouseItem = null;
+            case 1:             
                 minDistance = Mathf.Infinity;
                 foreach (InteractItem_Base item in InteractManager.instance.GetItemList(Storage))
                 {
@@ -75,5 +75,13 @@ public class Mission_GetResource : AI_Mission_Base
     public override void MissionAbort(AI_Base brain, Character_Base character, AI_Mission_Base newMission)
     {
         base.MissionAbort(brain, character, newMission);
+        if (TargetItem)
+        {
+            TargetItem.ReleaseSlot(ownerCharacter);
+        }
+        if (HouseItem)
+        {
+            HouseItem.ReleaseSlot(ownerCharacter);
+        }
     }
 }

@@ -95,11 +95,16 @@ public class AI_Base : MonoBehaviour
     #region Events
     private void OnNewCharacterEnter(Character_Base character)
     {
-        if (character.CState.Camp != state.Camp)
+        switch (workType)
         {
-            AI_Mission_Base scaredRun = new Mission_ScaredRunBack(character.transform);
-            scaredRun.Priority = 10;
-            StartNewMission(scaredRun);
+            case WorkType.Farmer:
+                if (character.CState.Camp != state.Camp)
+                {
+                    AI_Mission_Base scaredRun = new Mission_ScaredRunBack(character.transform);
+                    scaredRun.Priority = 10;
+                    StartNewMission(scaredRun);
+                }
+                break;
         }
     }
 

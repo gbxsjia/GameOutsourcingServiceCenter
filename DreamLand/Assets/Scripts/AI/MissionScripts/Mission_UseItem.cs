@@ -6,7 +6,7 @@ using UnityEngine;
 public class Mission_UseItem : AI_Mission_Base
 {
     public InteractItemType ItemType;
-
+    InteractItem_Base TargetItem;
     public Mission_UseItem(InteractItemType itemType)
     {
         ItemType = itemType;
@@ -14,7 +14,7 @@ public class Mission_UseItem : AI_Mission_Base
     public override void SetUpActions()
     {
         base.SetUpActions();
-        InteractItem_Base TargetItem = null;
+        
         float minDistance = Mathf.Infinity;
         foreach (InteractItem_Base item in InteractManager.instance.GetItemList(ItemType))
         {
@@ -35,6 +35,14 @@ public class Mission_UseItem : AI_Mission_Base
             AddNewAction(new Action_RotateTowards(TargetItem.GetSlot().position + TargetItem.GetSlot().forward, 2f));
             AddNewAction(new Action_Interact(TargetItem, 1));
 
+        }
+    }
+    public override void MissionAbort(AI_Base brain, Character_Base character, AI_Mission_Base newMission)
+    {
+        base.MissionAbort(brain, character, newMission);
+        if (TargetItem)
+        {
+            TargetItem.ReleaseSlot(ownerCharacter);
         }
     }
 }

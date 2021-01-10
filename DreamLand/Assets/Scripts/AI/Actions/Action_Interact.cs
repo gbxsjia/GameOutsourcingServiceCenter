@@ -28,8 +28,6 @@ public class Action_Interact : AI_Action_Base
         }
     }
 
-
-
     private void OnBehaviourFinish()
     {
         if (Item)
