@@ -12,23 +12,21 @@ public class MapGenerator : MonoBehaviour
     private float LastZvalue;
     private void Start()
     {
+        LastZvalue = PlayerMovement.instance.transform.position.z;
         for (int i = 0; i < 3; i++)
         {
             GenerateBlock();
         }
-
-        LastZvalue = PlayerMovement.instance.transform.position.z;
     }
 
     private void Update()
     {
-        if (PlayerMovement.instance.transform.position.z - LastZvalue > 100)
+        if (PlayerMovement.instance.transform.position.z - LastZvalue >= 100)
         {
-            LastZvalue = LastZvalue + 100;
-            GenerateBlock();
-
+            LastZvalue += 100;
             Destroy(BlockInstances[0]);
             BlockInstances.RemoveAt(0);
+            GenerateBlock();
         }
     }
 
