@@ -1,5 +1,0 @@
-sceneSetups:
-- path: "C:/\u65B0\u5EFA\u6587\u4EF6\u5939/GameOutsourcingServiceCenter/Sliding Cube/Assets/Scenes/SampleScene.unity"
-  isLoaded: 1
-  isActive: 1
-  isSubScene: 0
