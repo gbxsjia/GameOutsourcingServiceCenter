@@ -34,7 +34,7 @@ public class Action_Interact : AI_Action_Base
     {
         if (Item)
         {
-            Item.InteractEnd(Character);
+            Item.InteractEnd(Character,true);
         }
         ActionFinish();
     }
@@ -45,7 +45,7 @@ public class Action_Interact : AI_Action_Base
         {
             if (Item)
             {
-                Item.InteractEnd(Character);
+                Item.InteractEnd(Character,false);
             }
         }
     }

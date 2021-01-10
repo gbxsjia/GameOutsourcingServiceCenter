@@ -10,7 +10,10 @@ public class Behaviour
         AnimationName = animName;
         Duration = timer = duration;
         Type = type;
-        EventTiming = (float[])eventTiming.Clone();
+        if (eventTiming != null)
+        {
+            EventTiming = (float[])eventTiming.Clone();
+        }     
     }
     public string AnimationName;
     public float Duration;
@@ -24,6 +27,8 @@ public class Behaviour
 
     public event System.Action<Behaviour, int> BehaviourTimingEvent;
     public event System.Action BehaviourFinishEvent;
+    public event System.Action BehaviourInterruptEvent;
+    public event System.Action BeforeExitEvent;
     public virtual void StartBehaviour(Character_Base character)
     {
         if (AnimationName.Length != 0)
@@ -37,7 +42,7 @@ public class Behaviour
     {
         timer -= Time.deltaTime;
 
-        if (eventIndex < EventTiming.Length && Duration - timer > EventTiming[eventIndex])
+        if (EventTiming!=null && eventIndex < EventTiming.Length && Duration - timer > EventTiming[eventIndex])
         {
             if (BehaviourTimingEvent != null)
             {
@@ -53,7 +58,11 @@ public class Behaviour
     }
     public virtual void BehaviourInterrpt()
     {
-
+        if (BehaviourInterruptEvent != null)
+        {
+            BehaviourInterruptEvent();
+        }
+        BeforeExit();
     }
 
     public virtual void BehaviourFinish()
@@ -62,7 +71,15 @@ public class Behaviour
         {
             BehaviourFinishEvent();
         }
+        BeforeExit();
         Character.FinishBehaviour();        
+    }
+    protected virtual void BeforeExit()
+    {
+        if (BeforeExitEvent != null)
+        {
+            BeforeExitEvent();
+        }
     }
 }
 
@@ -71,4 +88,5 @@ public enum BehaviourType
     Attack,
     Interact,
     Stun,
+    Jump,
 }

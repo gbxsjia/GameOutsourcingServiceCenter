@@ -14,7 +14,7 @@ public class ItemAnimation : MonoBehaviour
         InteractItem.InteractEndEvent += OnEndInteract;
     }
 
-    private void OnEndInteract(Character_Base obj)
+    private void OnEndInteract(Character_Base character,bool success)
     {
         animator.SetTrigger("End");
     }

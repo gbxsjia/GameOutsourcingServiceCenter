@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AI_Mission_Base
 {
-    public int Priorit;
+    public int Priority;
 
     public List<AI_Action_Base> ActionList = new List<AI_Action_Base>();
     private AI_Action_Base currentAction;
@@ -13,6 +13,8 @@ public class AI_Mission_Base
     public AI_Base ownerBrain;
     public Character_Base ownerCharacter;
 
+    protected int AchivementCounts = 1;
+    protected int AchiveIndex = 0;
     public virtual void SetUpActions()
     {
 
@@ -46,15 +48,28 @@ public class AI_Mission_Base
             ActionList.RemoveAt(0);
             currentAction.ActionStart(this, ownerBrain, ownerCharacter);
         }
-        else
-        {
-            MissionEnd(ownerBrain, ownerCharacter);
-        }
+  
     }
     public virtual void ActionFinish(AI_Action_Base action, bool success)
     {
         currentAction = null;
-        ActionStart();
+        if (ActionList.Count > 0)
+        {
+            ActionStart();
+        }
+        else
+        {
+            AchiveIndex++;
+            if (AchiveIndex >= AchivementCounts)
+            {
+                MissionEnd(ownerBrain, ownerCharacter);
+            }
+            else
+            {
+                SetUpActions();
+                ActionStart();
+            }
+        }       
     }
 
     public void AddNewAction(AI_Action_Base action)

@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class CharacterState_Base : MonoBehaviour
 {
+    [Header("基础属性")]
     public bool isAlive;
+
+    public int Camp;
 
     public int HealthMax;
     public int HealthCurrent;
 
     public event System.Action<DamageInfo> DeathEvent;
 
+    [Header("AI需求值")]
+    public float AIStamina;
 
     private void Start()
     {

@@ -11,13 +11,10 @@ public class Action_RotateTowards : AI_Action_Base
         targetPosition = position;
         AngleRange = angleRange;
     }
-    public override void ActionStart(AI_Mission_Base mission, AI_Base brain, Character_Base character)
-    {
-        base.ActionStart(mission, brain, character); Debug.Log("Rotate Start");
-    }
+
     public override void BeforeExit()
     {
-        base.BeforeExit(); Debug.Log("Rotate End");
+        base.BeforeExit();
     }
     public override void ActionUpdate(AI_Base brain, Character_Base character)
     {

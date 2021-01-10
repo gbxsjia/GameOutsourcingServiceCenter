@@ -5,23 +5,36 @@ using UnityEngine;
 
 public class Mission_UseItem : AI_Mission_Base
 {
-    public InteractItem_Base TargetItem;
-    public float Duration;
+    public InteractItemType ItemType;
 
-    public Mission_UseItem(InteractItem_Base item, float duration)
+    public Mission_UseItem(InteractItemType itemType)
     {
-        TargetItem = item;
-        Duration = duration;
+        ItemType = itemType;
     }
     public override void SetUpActions()
     {
         base.SetUpActions();
-        Transform place= TargetItem.GetWaitingPlace();
-        if (place)
+        InteractItem_Base TargetItem = null;
+        float minDistance = Mathf.Infinity;
+        foreach (InteractItem_Base item in InteractManager.instance.GetItemList(ItemType))
         {
-            AddNewAction(new Action_NavigaitionTo(place.position, 0.5f));
-            AddNewAction(new Action_RotateTowards(place.position + place.forward, 1f));
-            AddNewAction(new Action_Interact(TargetItem, Duration));
+            float distance = Vector3.Distance(item.transform.position, ownerCharacter.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                TargetItem = item;
+            }
+        }
+
+        if (TargetItem)
+        {
+            AddNewAction(new Action_NavigaitionTo(TargetItem.GetSlot().position, 2));
+            AddNewAction(new Action_RotateTowards(TargetItem.GetSlot().position + TargetItem.GetSlot().forward, 2f));
+            AddNewAction(new Action_WaitForInteract(TargetItem));
+            AddNewAction(new Action_NavigaitionTo(TargetItem.GetSlot().position, 0.5f));
+            AddNewAction(new Action_RotateTowards(TargetItem.GetSlot().position + TargetItem.GetSlot().forward, 2f));
+            AddNewAction(new Action_Interact(TargetItem, 1));
+
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Character_Base : MonoBehaviour
 {
     private Rigidbody rb;
+    public CharacterState_Base CState;
 
     [Header("能力")]
     public float WalkSpeed;
@@ -22,10 +23,11 @@ public class Character_Base : MonoBehaviour
 
     public float RotationSpeed;
     private Transform FocusTransform;
+    public Transform BodyTransform;
 
     public Weapon_Base Weapon;
 
-    public int Camp;
+    private Coroutine JumpProcessCoroutin;
 
     // 事件
     public event System.Action<Behaviour> BehaviourFinishEvent;
@@ -34,6 +36,7 @@ public class Character_Base : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        CState = GetComponent<CharacterState_Base>();
         LastMoveDirection = transform.forward;
         SetUp();
     }
@@ -152,6 +155,7 @@ public class Character_Base : MonoBehaviour
         Behaviour newBehaviour = new Behaviour(animName, duration, type, eventTiming);
         return StartBehaviour(newBehaviour);
     }
+
     public Behaviour StartBehaviour(Behaviour behaviour)
     {
         if (currentBehaviour != null)
@@ -187,6 +191,37 @@ public class Character_Base : MonoBehaviour
         if (BehaviourEndEvent != null)
         {
             BehaviourEndEvent(lastBehaviour);
+        }
+    }
+
+    public void JumpStart(Vector3 end, float duration, float height,string animName)
+    {
+        JumpProcessCoroutin = StartCoroutine(JumpProcess(end, duration, height));
+        StartBehaviour(new Behaviour(animName, duration, BehaviourType.Jump, null));
+        currentBehaviour.BeforeExitEvent += JumpExit;
+    }
+
+    private void JumpExit()
+    {
+        if (currentBehaviour.Type == BehaviourType.Jump)
+        {
+            currentBehaviour.BeforeExitEvent -= JumpExit;
+            BodyTransform.localPosition = Vector3.zero;
+        }    
+    }
+    private IEnumerator JumpProcess(Vector3 end, float duration, float height)
+    {
+        Vector3 start = transform.position;
+        float timer = duration;
+
+        float a = -4 * height / duration / duration;
+        float b = 4 * height / duration;
+        while (timer > 0)
+        {
+            transform.position = Vector3.Lerp(start, end, 1 - timer / duration);
+            BodyTransform.localPosition = Vector3.up * (a * (duration - timer) * (duration - timer) + b * (duration - timer));
+            timer -= Time.deltaTime;
+            yield return null;
         }
     }
     #endregion

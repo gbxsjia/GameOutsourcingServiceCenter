@@ -11,19 +11,28 @@ public class AI_Base : MonoBehaviour
     public AI_Mission_Base currentMission;
     public AI_Mission_Base defaultMission;
 
+    public PatrolPath[] Paths;
+
+    public WorkType workType;
+
     private void Awake()
     {
         PossessCharacter(gameObject);
+        StartCoroutine(LateStart());
+        perception.NewCharacterEnterEvent += OnNewCharacterEnter;
     }
 
-    private void Start()
+    private void Update()
     {
-   
+        if (currentMission != null)
+        {
+            currentMission.MissionUpdate(this, character);
+        }
     }
-    public void StartDefaultMission()
+    private IEnumerator LateStart()
     {
-        defaultMission = new Mission_GetResource(InteractItemType.Resource, InteractItemType.House);
-        StartNewMission(defaultMission);
+        yield return new WaitForSeconds(1);
+        GetNewMission();
     }
 
     public void PossessCharacter(GameObject target)
@@ -34,26 +43,70 @@ public class AI_Base : MonoBehaviour
 
     public void StartNewMission(AI_Mission_Base mission)
     {
+        int oldPriority = -1;
         if (currentMission != null)
         {
-            currentMission.MissionAbort(this, character, mission);
+            oldPriority = currentMission.Priority;
         }
-        currentMission = mission;
-        currentMission.MissionStart(this, character);
+
+        if (mission.Priority > oldPriority)
+        {
+            if (currentMission != null)
+            {
+                currentMission.MissionAbort(this, character, mission);
+            }
+
+            currentMission = mission;
+            currentMission.MissionStart(this, character);
+        }
     }
 
-    private void Update()
-    {
-        if (currentMission!=null)
-        {
-            currentMission.MissionUpdate(this, character);
-        }      
-    }
+
 
     public void MissionEnd(AI_Mission_Base mission, bool result)
     {
         currentMission = null;
+        GetNewMission();
     }
 
+    public void GetNewMission()
+    {
 
+        switch (workType)
+        {
+            case WorkType.Farmer:
+                if (state.AIStamina <= 40)
+                {
+                    StartNewMission(new Mission_UseItem(InteractItemType.House));
+                }
+                else
+                {
+                    StartNewMission(new Mission_GetResource(InteractItemType.Resource, InteractItemType.Chest));
+                }
+                break;
+
+            case WorkType.Guardian:
+                StartNewMission(new Mission_Patrol(Paths, 3));
+                break;
+        }
+
+    }
+
+    #region Events
+    private void OnNewCharacterEnter(Character_Base character)
+    {
+        if (character.CState.Camp != state.Camp)
+        {
+            AI_Mission_Base scaredRun = new Mission_ScaredRunBack(character.transform);
+            scaredRun.Priority = 10;
+            StartNewMission(scaredRun);
+        }
+    }
+
+    #endregion
+}
+public enum WorkType
+{
+    Farmer,
+    Guardian
 }

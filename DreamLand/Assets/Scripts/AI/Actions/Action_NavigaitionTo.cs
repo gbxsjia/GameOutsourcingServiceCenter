@@ -24,7 +24,7 @@ public class Action_NavigaitionTo : AI_Action_Base
     {
         base.ActionStart(mission, brain, character);
         agent = character.GetComponent<NavMeshAgent>();
-        Debug.Log("Nav Start");
+
         agent.CalculatePath(TargetPosition, path);
     }
     public override void ActionUpdate(AI_Base brain, Character_Base character)
@@ -44,6 +44,7 @@ public class Action_NavigaitionTo : AI_Action_Base
         if (path.corners.Length >= 2)
         {
             character.Move(path.corners[1] - character.transform.position);
+            character.RotateTowards(path.corners[1]);
             if (Vector3.Distance(character.transform.position, path.corners[1]) <= 0.1f)
             {
                 agent.CalculatePath(TargetPosition, path);
@@ -51,18 +52,17 @@ public class Action_NavigaitionTo : AI_Action_Base
         }
         else
         {
-            ActionFinish();
+            ActionFinish();            
         }
 
         if (Vector3.Distance(character.transform.position, TargetPosition) <= Distance)
         {
-            ActionFinish();
+            ActionFinish(); 
         }
     }
     public override void BeforeExit()
     {
         base.BeforeExit();
-        Debug.Log("Nav End");
         Character.Move(Vector3.zero);
     }
 }

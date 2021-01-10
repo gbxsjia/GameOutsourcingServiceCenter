@@ -7,8 +7,7 @@ public class InteractItem_Base : MonoBehaviour
     public InteractItemType type;
 
     public Transform InteractSlot;
-    public Transform InteractWaitingPlace;
-    public bool SlotState;
+    public bool SlotState=true;
     public Character_Base SlotUser;
 
     public float Duration;
@@ -16,25 +15,25 @@ public class InteractItem_Base : MonoBehaviour
     private void Start()
     {
         InteractManager.instance.RegistItem(this);
+        SlotState = true;
     }
 
     public event System.Action<Character_Base> InteractStartEvent;
-    public event System.Action<Character_Base> InteractEndEvent;
+    public event System.Action<Character_Base,bool> InteractEndEvent;
     public virtual bool InteractStart(Character_Base character)
     {
         if (InteractStartEvent != null)
         {
             InteractStartEvent(character);
         }
-        SlotState = false;
-        SlotUser = character;
+        
         return true;
     }
     public virtual void InteractEnd(Character_Base character, bool success=true)
     {
         if (InteractEndEvent != null)
         {
-            InteractEndEvent(character);
+            InteractEndEvent(character,success);
         }
         if (SlotUser == character)
         {
@@ -46,19 +45,24 @@ public class InteractItem_Base : MonoBehaviour
     {
         return InteractSlot;
     }
-    public Transform GetWaitingPlace()
+    public void OccupySlot(Character_Base character)
     {
-        return InteractWaitingPlace;
+        if (CanInteract())
+        {
+            SlotState = false;
+            SlotUser = character;
+        }
     }
-    public virtual AI_Mission_Base GetMission()
+    public bool CanInteract()
     {
-        AI_Mission_Base newMission = new Mission_UseItem(this,Duration);
-        return newMission;
+        return SlotState;
     }
+
 }
 public enum InteractItemType
 {
-    House,
+    Chest,
     Resource,
+    House,
     End
 }

@@ -48,7 +48,7 @@ public class BattleManagerAI : MonoBehaviour
         Character_Base character = other.GetComponent<Character_Base>();
         if (character)
         {
-            if (character.Camp == camp)
+            if (character.CState.Camp == camp)
             {
                 AllyCharacters.Add(character);
                 AIBrains.Add(character.GetComponent<AI_Base>());
