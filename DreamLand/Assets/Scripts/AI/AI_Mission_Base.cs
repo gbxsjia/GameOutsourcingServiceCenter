@@ -33,12 +33,14 @@ public class AI_Mission_Base
 
     public virtual void MissionEnd(AI_Base brain, Character_Base character)
     {
+        BeforeExit();
         brain.MissionEnd(this, true);
     }
 
     public virtual void MissionAbort(AI_Base brain, Character_Base character, AI_Mission_Base newMission)
     {
         currentAction.ActionInterrupt(brain, character);
+        BeforeExit();
     }
     public virtual void ActionStart()
     {
@@ -79,5 +81,9 @@ public class AI_Mission_Base
     public AI_Action_Base GetCurrentAction()
     {
         return currentAction;
+    }
+    public virtual void BeforeExit()
+    {
+
     }
 }

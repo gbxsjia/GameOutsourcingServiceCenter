@@ -6,7 +6,7 @@ public class AI_Base : MonoBehaviour
 {
     public Character_Base character;
     public CharacterState_Base state;
-    public AIPerception perception;
+
 
     public AI_Mission_Base currentMission;
     public AI_Mission_Base defaultMission;
@@ -19,7 +19,7 @@ public class AI_Base : MonoBehaviour
     {
         PossessCharacter(gameObject);
         StartCoroutine(LateStart());
-        perception.NewCharacterEnterEvent += OnNewCharacterEnter;
+      
     }
 
     private void Update()
@@ -92,23 +92,7 @@ public class AI_Base : MonoBehaviour
 
     }
 
-    #region Events
-    private void OnNewCharacterEnter(Character_Base character)
-    {
-        switch (workType)
-        {
-            case WorkType.Farmer:
-                if (character.CState.Camp != state.Camp)
-                {
-                    AI_Mission_Base scaredRun = new Mission_ScaredRunBack(character.transform);
-                    scaredRun.Priority = 10;
-                    StartNewMission(scaredRun);
-                }
-                break;
-        }
-    }
 
-    #endregion
 }
 public enum WorkType
 {

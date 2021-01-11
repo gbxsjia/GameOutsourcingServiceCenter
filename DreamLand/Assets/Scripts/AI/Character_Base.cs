@@ -9,7 +9,8 @@ public class Character_Base : MonoBehaviour
 
     [Header("能力")]
     public float WalkSpeed;
-    public float SprintSpeed;
+    public float RunSpeed;
+    public float HeavySpeed;
     public float MoveAcceleration;
     public Vector3 LastMoveDirection;
     public Vector3 InputDirection;
@@ -17,6 +18,8 @@ public class Character_Base : MonoBehaviour
 
     // 状态
     private bool onGround;
+    private MoveMode moveMode= MoveMode.walk;
+    private float currentSpeed;
     private Behaviour currentBehaviour;
 
     public Animator animator;
@@ -46,7 +49,7 @@ public class Character_Base : MonoBehaviour
         {
             animator = GetComponentInChildren<Animator>();
         }
-        
+        SetMoveMode(MoveMode.walk);
     }
     private void Update()
     {
@@ -82,9 +85,25 @@ public class Character_Base : MonoBehaviour
             LastMoveDirection = Direction;           
         }        
     }
-    public void UpdateVelocity()
+    public void SetMoveMode(MoveMode mode)
     {
-        Vector3 v = Vector3.MoveTowards(rb.velocity, InputDirection * WalkSpeed, MoveAcceleration);
+        moveMode = mode;
+        switch (mode)
+        {
+            case MoveMode.walk:
+                currentSpeed = WalkSpeed;
+                break;
+            case MoveMode.run:
+                currentSpeed = RunSpeed;
+                break;
+            case MoveMode.heavy:
+                currentSpeed = HeavySpeed;
+                break;
+        }
+    }
+    public void UpdateVelocity()
+    {    
+        Vector3 v = Vector3.MoveTowards(rb.velocity, InputDirection * currentSpeed, MoveAcceleration);
         v.y = rb.velocity.y;
         rb.velocity = v;
     }
@@ -226,4 +245,10 @@ public class Character_Base : MonoBehaviour
     }
     #endregion
 
+}
+public enum MoveMode
+{
+    walk,
+    run,
+    heavy
 }

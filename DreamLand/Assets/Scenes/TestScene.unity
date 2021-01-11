@@ -1658,6 +1658,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8118646888874322579, guid: eb5fed7b32a843043a37db63dd2d71cf,
+        type: 3}
+      propertyPath: InitialReactionConfig.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb5fed7b32a843043a37db63dd2d71cf, type: 3}
 --- !u!1001 &980657465

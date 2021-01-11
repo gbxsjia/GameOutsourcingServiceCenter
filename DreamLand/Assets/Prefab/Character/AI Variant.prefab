@@ -74,7 +74,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 0}
   state: {fileID: 0}
-  perception: {fileID: 806839176}
   Paths: []
   workType: 0
 --- !u!195 &2737542267463584652
@@ -99,6 +98,23 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &8118646888874322579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3921166233171287226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc8735a3259ec1c4cad935d6bd086eaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brain: {fileID: 1533045147}
+  perception: {fileID: 806839176}
+  InitialReactionConfig:
+  - stimulus: 0
+    reaction: 0
 --- !u!1001 &2556228779678205908
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -266,6 +282,16 @@ PrefabInstance:
       propertyPath: BodyTransform
       value: 
       objectReference: {fileID: 2771101813730753246}
+    - target: {fileID: 5339981446901820779, guid: 2f91cb4450a04b94b8b137d084a96cb6,
+        type: 3}
+      propertyPath: RunSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5339981446901820779, guid: 2f91cb4450a04b94b8b137d084a96cb6,
+        type: 3}
+      propertyPath: HeavySpeed
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 5339981446901820781, guid: 2f91cb4450a04b94b8b137d084a96cb6,
         type: 3}
       propertyPath: m_UseGravity
