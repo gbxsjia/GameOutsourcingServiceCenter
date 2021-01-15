@@ -10,7 +10,6 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
-        followTransform = PlayerController.instance.transform;
         offset = transform.position - followTransform.position;
     }
     private void Update()

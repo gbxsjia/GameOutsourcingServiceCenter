@@ -4,52 +4,69 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody rigid;
-    public float HorizontalSpeed;
-    public float HorizontalAcceleration;
-    public float JumpForce;
-    public float VerticalSpeed;
-    public float VerticalAcceleration;
-
-    private int GroundContactCount;
-
     public static PlayerController instance;
+
+    public Character currentCharacter;
+
+    public float FollowLagSpeed;
+    private Vector3 CameraOffset;
+
+    public GameObject MarioBodyPrefab;
+    private bool isMarioBody = true;
     private void Awake()
     {
         instance = this;
     }
-
     private void Start()
     {
-        rigid = GetComponent<Rigidbody>();
+        CameraOffset = transform.position - currentCharacter.transform.position;
     }
 
     private void Update()
     {
-        float inputX = Input.GetAxis("Horizontal");
+        Vector3 inputDirection=Vector3.zero;
 
-        Vector3 newVelocity = rigid.velocity;
-        newVelocity.x = Mathf.MoveTowards(newVelocity.x, inputX * HorizontalSpeed, HorizontalAcceleration * Time.deltaTime);
-        newVelocity.z = Mathf.MoveTowards(newVelocity.z, VerticalSpeed, VerticalAcceleration * Time.deltaTime);
-        rigid.velocity = newVelocity;
+        inputDirection.Set(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 
-        if (Input.GetKeyDown(KeyCode.Space) && GroundContactCount > 0)
+        if (currentCharacter != null)
         {
-            rigid.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+            currentCharacter.Move(inputDirection);
         }
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "ground")
+
+        if (Input.GetMouseButtonDown(0))
         {
-            GroundContactCount++;
+            if (currentCharacter != null)
+            {
+                currentCharacter.Attack();
+            }
         }
-    }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "ground")
+
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            GroundContactCount--;
+            BackToMario();
+        }
+        // follow body
+
+        transform.position = Vector3.Lerp(transform.position, currentCharacter.transform.position + CameraOffset, FollowLagSpeed);
+    }
+
+    public void ChangeBody(Character newBody)
+    {
+        Destroy(currentCharacter.gameObject);
+        currentCharacter = newBody;
+        isMarioBody = false;
+    }
+
+    public void BackToMario()
+    {
+        if (!isMarioBody)
+        {
+            Vector3 newPosition = currentCharacter.transform.position;
+            Quaternion newRotation = currentCharacter.transform.rotation;
+            Destroy(currentCharacter.gameObject);
+            GameObject g = Instantiate(MarioBodyPrefab, newPosition, newRotation);
+            currentCharacter = g.GetComponent<Character>();
+            isMarioBody = true;
         }
     }
 }

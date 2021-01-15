@@ -6,37 +6,31 @@ public class Weapon_Shooter :Weapon_Base
 {
     [SerializeField]
     private GameObject ProjectilePrefab;
+    public ShootInfo[] ShootInfos;
+    private int BulletIndex;
 
-    public float ShootInterval;
-    public float ShootCoolDown;
-
-    private float FireInterval;
-    private float CoolDownTime;
-
+    public override void AttackCommand()
+    {
+        base.AttackCommand();
+        BulletIndex = 0;
+    }
     protected override void OnBehaviourTiming(Behaviour Behaviour, int Index)
     {
-        StartShooting(1);
+        CreateBullet();
     }
 
-    public void StartShooting(int times)
-    {
-        if (Time.time >= CoolDownTime)
-        {
-            CoolDownTime = Time.time;
-            StartCoroutine(ShootProcess(times));
-        }
-    }
-    private IEnumerator ShootProcess(int shootTimes)
-    {
-        for (int i = 0; i < shootTimes; i++)
-        {
-            CreateBullet();
-            yield return new WaitForSeconds(FireInterval);
-        }     
-    }
     public void CreateBullet()
     {
-        Quaternion shootRotation = transform.rotation * Quaternion.Euler(Random.Range(-2f,2f),Random.Range(-2f,2f),0);
-        GameObject g = Instantiate(ProjectilePrefab, transform.position, shootRotation);
+        Quaternion shootRotation = transform.rotation * Quaternion.Euler(0, ShootInfos[BulletIndex].AngleOffset, 0);
+        Vector3 SpawnPosition = transform.position + transform.forward * 0.5f + Vector3.up * 0.5f;
+        SpawnPosition += transform.forward * ShootInfos[BulletIndex].PositionOffset.z + transform.right * ShootInfos[BulletIndex].PositionOffset.x;
+        GameObject g = Instantiate(ProjectilePrefab, SpawnPosition, shootRotation);
+        BulletIndex++;
     }
+}
+[System.Serializable]
+public class ShootInfo
+{
+    public float AngleOffset;
+    public Vector3 PositionOffset;
 }

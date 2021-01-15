@@ -24,5 +24,10 @@ public class PlayerController : MonoBehaviour
         {
             character.Jump();
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            character.AttackCommand();
+        }
     }
 }

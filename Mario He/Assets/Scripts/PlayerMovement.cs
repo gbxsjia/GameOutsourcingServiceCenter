@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float JumpForce;
     public int GroundContactCount;
-
+    
 
     void FixedUpdate()
     {
@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
         //左右
         float Inputx = Input.GetAxis("LR");
         newvelocity.x = Mathf.MoveTowards(newvelocity.x, Inputx * MaxHorizontalSpeed, HorizontalAcceleration * Time.fixedDeltaTime);
-
+        
         //前进
         float Inputy = Input.GetAxis("FB");
         newvelocity.z = Mathf.MoveTowards(newvelocity.z, Inputy * MaxHorizontalSpeed, HorizontalAcceleration * Time.fixedDeltaTime);
