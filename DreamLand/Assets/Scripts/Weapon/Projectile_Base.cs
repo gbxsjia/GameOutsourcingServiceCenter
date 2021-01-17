@@ -8,7 +8,20 @@ public class Projectile_Base : MonoBehaviour
     private Rigidbody rb;
     public float Speed;
 
+    public Character_Base Owner;
+    public Weapon_Shooter Weapon;
+
+    public float Damage;
+
     float timer;
+
+    public virtual void OnCreated(Character_Base owner, Weapon_Shooter weapon)
+    {
+        Owner = owner;
+        Weapon = weapon;
+        Damage = weapon.GetDamage();
+    }
+
     private void Start()
     {
         timer = Time.time;

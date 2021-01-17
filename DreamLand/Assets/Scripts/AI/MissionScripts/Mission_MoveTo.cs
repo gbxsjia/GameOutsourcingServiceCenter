@@ -19,11 +19,6 @@ public class Mission_MoveTo : AI_Mission_Base
     {
         base.SetUpActions();
 
-        if (FocusTarget != null)
-        {
-            AddNewAction(new Action_SetFocusTarget(FocusTarget));
-        }
-
         if (UseNavigation)
         {
             AddNewAction(new Action_NavigaitionTo(TargetPosition, 0.4f));

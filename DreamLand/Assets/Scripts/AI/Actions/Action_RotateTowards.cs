@@ -18,8 +18,7 @@ public class Action_RotateTowards : AI_Action_Base
     }
     public override void ActionUpdate(AI_Base brain, Character_Base character)
     {
-        base.ActionUpdate(brain, character);
-        character.SetFocusTransform(null);        
+        base.ActionUpdate(brain, character);      
         float angle = character.RotateTowards(targetPosition);
         if (angle <= AngleRange)
         {

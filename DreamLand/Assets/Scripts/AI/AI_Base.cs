@@ -41,15 +41,16 @@ public class AI_Base : MonoBehaviour
         state = target.GetComponent<CharacterState_Base>();
     }
 
-    public void StartNewMission(AI_Mission_Base mission)
+    public void StartNewMission(AI_Mission_Base mission, int Priority=0)
     {
+        mission.Priority = Priority;
         int oldPriority = -1;
         if (currentMission != null)
         {
             oldPriority = currentMission.Priority;
         }
 
-        if (mission.Priority > oldPriority)
+        if (Priority > oldPriority)
         {
             if (currentMission != null)
             {
@@ -89,7 +90,6 @@ public class AI_Base : MonoBehaviour
                 StartNewMission(new Mission_Patrol(Paths, 3));
                 break;
         }
-
     }
 
 

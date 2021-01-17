@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public LayerMask GroundLayer;
     public Character_Base character;
     private void Start()
     {
@@ -15,10 +15,7 @@ public class PlayerController : MonoBehaviour
         Vector3 InputDirection = Vector3.forward;
         InputDirection.Set(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         character.Move(InputDirection);
-        if (InputDirection != Vector3.zero)
-        {
-            character.RotateTowards(transform.position + InputDirection);
-        }
+
        
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -27,7 +24,15 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            character.AttackCommand();
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray,out hit,100000, GroundLayer))
+            {
+                if (hit.collider)
+                {
+                    character.AttackCommand(hit.point - character.transform.position);
+                }          
+            }
         }
     }
 }

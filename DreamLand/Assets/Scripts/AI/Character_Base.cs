@@ -7,6 +7,8 @@ public class Character_Base : MonoBehaviour
     private Rigidbody rb;
     public CharacterState_Base CState;
 
+    public GameObject UIPrefab;
+
     [Header("能力")]
     public float WalkSpeed;
     public float RunSpeed;
@@ -25,10 +27,10 @@ public class Character_Base : MonoBehaviour
     public Animator animator;
 
     public float RotationSpeed;
-    private Transform FocusTransform;
+    private Vector3 OverrideDirection;
     public Transform BodyTransform;
 
-    public Weapon_Base Weapon;
+    public EquipmentManager equipmentManager;
 
     private Coroutine JumpProcessCoroutin;
 
@@ -38,9 +40,6 @@ public class Character_Base : MonoBehaviour
     public event System.Action<Behaviour> BehaviourEndEvent;
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        CState = GetComponent<CharacterState_Base>();
-        LastMoveDirection = transform.forward;
         SetUp();
     }
     private void SetUp()
@@ -49,16 +48,23 @@ public class Character_Base : MonoBehaviour
         {
             animator = GetComponentInChildren<Animator>();
         }
+        rb = GetComponent<Rigidbody>();
+        if (equipmentManager == null)
+        {
+            equipmentManager = GetComponent<EquipmentManager>();
+        }
+        CState = GetComponent<CharacterState_Base>();
+        LastMoveDirection = transform.forward;
         SetMoveMode(MoveMode.walk);
+
+        GameObject g = Instantiate(UIPrefab);
+        g.GetComponent<UI_UnitBar>().SetOwner(this, CState);
     }
     private void Update()
     {
         CheckGround();
         UpdateVelocity();
-        if (FocusTransform)
-        {
-            RotateToFocusTarget();
-        }
+
         if (currentBehaviour!=null)
         {
             currentBehaviour.UpdateBehaviour(this);
@@ -70,9 +76,20 @@ public class Character_Base : MonoBehaviour
         UpdateAnimation();
     }
 
-    public void AttackCommand()
+    public bool canAttack()
     {
-        Weapon.AttackCommand();
+        return currentBehaviour == null;
+    }
+    public float GetAttackRange()
+    {
+        return equipmentManager.Weapon.FitRangeMax;
+    }
+    public void AttackCommand(Vector3 direction)
+    {
+        direction.y = 0;
+        direction.Normalize();
+        equipmentManager.Weapon.AttackCommand(direction);
+        SetOverrideDirection(direction);
     }
     #region Abilities
 
@@ -82,7 +99,8 @@ public class Character_Base : MonoBehaviour
         InputDirection = Direction;
         if (Direction != Vector3.zero)
         {
-            LastMoveDirection = Direction;           
+            LastMoveDirection = Direction;
+            RotateTowards(transform.position + Direction);
         }        
     }
     public void SetMoveMode(MoveMode mode)
@@ -145,25 +163,18 @@ public class Character_Base : MonoBehaviour
     public float RotateTowards(Vector3 targetPos)
     {
         Vector3 direction = targetPos - transform.position;
+        if (currentBehaviour != null)
+        {
+            direction = OverrideDirection;         
+        }
         direction.y = 0;
         Quaternion targetRotation = Quaternion.LookRotation(direction);
-        if (!FocusTransform)
-        {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
-        }
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, RotationSpeed*Time.deltaTime);
         return Quaternion.Angle(transform.rotation, targetRotation);
     }
-    public void RotateToFocusTarget()
+    public void SetOverrideDirection(Vector3 direction)
     {
-        Vector3 direction = FocusTransform.position - transform.position;
-        direction.y = 0;
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
-    }
-    public void SetFocusTransform(Transform target)
-    {
-        FocusTransform = target;
+        OverrideDirection = direction;
     }
     public void PlayAnimation(string animationName)
     {

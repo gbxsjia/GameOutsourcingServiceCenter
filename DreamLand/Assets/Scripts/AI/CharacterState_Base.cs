@@ -12,11 +12,16 @@ public class CharacterState_Base : MonoBehaviour
     public int HealthMax;
     public int HealthCurrent;
 
+    public float WillPowerMax;
+    public float WillPowerCurrent;
+
     public event System.Action<DamageInfo> DeathEvent;
 
     [Header("AI需求值")]
     public float AIStamina;
 
+    private List<float> DamageBuff=new List<float>();
+ 
     private void Start()
     {
         Initialize();
@@ -25,6 +30,7 @@ public class CharacterState_Base : MonoBehaviour
     {
         isAlive = true;
         HealthCurrent = HealthMax;
+        WillPowerCurrent = WillPowerMax;
     }
     public void TakeDamage(DamageInfo info)
     {
@@ -36,6 +42,26 @@ public class CharacterState_Base : MonoBehaviour
                 DeathEvent(info);
             }
         }
+    }
+    public void AddDamageBuff(float amount)
+    {
+        DamageBuff.Add(amount);
+    }
+    public void RemoveDamageBuff(float amount)
+    {
+        DamageBuff.Remove(amount);
+    }
+    public float GetDamageBuff()
+    {
+        float result = 0;
+        foreach(float f in DamageBuff)
+        {
+            if (f > result)
+            {
+                result = f;
+            }
+        }
+        return result;
     }
 }
 

@@ -17,7 +17,6 @@ public class Action_Moveto : AI_Action_Base
     {
         base.ActionUpdate(brain, character);
         character.Move(TargetPosition - character.transform.position);
-        character.RotateTowards(TargetPosition);
         if (Vector3.Distance(character.transform.position, TargetPosition) <= Distance)
         {      
             ActionFinish();

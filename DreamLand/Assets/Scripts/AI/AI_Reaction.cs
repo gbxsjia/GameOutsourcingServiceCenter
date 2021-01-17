@@ -35,19 +35,28 @@ public class AI_Reaction : MonoBehaviour
         {
             return;
         }
+        if (character.CState.Camp != brain.state.Camp)
+        {
+            OnEnemyEnter(character);
+        }
+    }
+    private void OnEnemyEnter(Character_Base character)
+    {
         switch (ReactionConfigs[StimulusType.SeeEnemy])
         {
             case ReactionType.RunAway:
-                if (character.CState.Camp != brain.state.Camp)
-                {
-                    AI_Mission_Base scaredRun = new Mission_ScaredRunBack(character.transform);
-                    scaredRun.Priority = 10;
-                    brain.StartNewMission(scaredRun);
-                }
+                AI_Mission_Base scaredRun = new Mission_ScaredRunBack(character.transform);
+                brain.StartNewMission(scaredRun, 10);
+                break;
+            case ReactionType.ChaseAttack:
+                brain.StartNewMission(new Mission_ChaseAttack(character), 10);
                 break;
         }
     }
+    private void OnAllyEnter(Character_Base character)
+    {
 
+    }
     #endregion
 }
 
@@ -58,7 +67,8 @@ public enum StimulusType
 }
 public enum ReactionType
 {
-    RunAway
+    RunAway,
+    ChaseAttack
 }
 [System.Serializable]
 public class ReactionPair

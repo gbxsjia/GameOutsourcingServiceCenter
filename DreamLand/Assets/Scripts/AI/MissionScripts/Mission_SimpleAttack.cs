@@ -15,7 +15,7 @@ public class Mission_SimpleAttack : AI_Mission_Base
 
         for (int i = 0; i < Times; i++)
         {
-            AddNewAction(new Action_Attack());
+            AddNewAction(new Action_Attack(ownerCharacter.transform));
         }
     }
 }

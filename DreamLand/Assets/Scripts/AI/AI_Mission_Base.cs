@@ -8,7 +8,7 @@ public class AI_Mission_Base
     public int Priority;
 
     public List<AI_Action_Base> ActionList = new List<AI_Action_Base>();
-    private AI_Action_Base currentAction;
+    protected AI_Action_Base currentAction;
 
     public AI_Base ownerBrain;
     public Character_Base ownerCharacter;

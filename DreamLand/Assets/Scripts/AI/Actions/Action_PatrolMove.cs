@@ -19,7 +19,6 @@ public class Action_PatrolMove :AI_Action_Base
         Vector3 TargetPosition = Path[WaypointIndex];
 
         character.Move(TargetPosition - character.transform.position);
-        character.RotateTowards(TargetPosition);
         if (Vector3.Distance(character.transform.position, TargetPosition) <= 1)
         {
             WaypointIndex++;
