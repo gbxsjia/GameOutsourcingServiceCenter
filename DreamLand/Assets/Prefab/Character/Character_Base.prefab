@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 5339981446901820776}
   - component: {fileID: 1946491030}
   - component: {fileID: 1739633160226286205}
+  - component: {fileID: 25725391874525672}
   m_Layer: 0
   m_Name: Character_Base
   m_TagString: Untagged
@@ -187,10 +188,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weapon: {fileID: 0}
-  DefaultWeapon: {fileID: 1125057900121608266, guid: 057afb9a98af3994fb4cab585531f0d8,
+  DefaultWeapon: {fileID: 3758330482795907267, guid: abc52dc3cdcc8ed43aa3e7f5a5facaef,
     type: 3}
   WeaponSlot: {fileID: 4337631139790954619}
   character: {fileID: 5339981446901820779}
+--- !u!114 &25725391874525672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339981446901820773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cdb903e36e432b4cb3ece32118ba0fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DRType: 0
 --- !u!1001 &6491372094846591999
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -8,8 +8,9 @@ public class Weapon_Base : MonoBehaviour
 
     public Behaviour AttackBehaviour;
 
-    public float BaseDamage;
+    public int BaseDamage;
     protected Vector3 AttackDirection;
+    public float Range;
     [Header("AI信息")]
     public float FitRangeMax;
     public float FitRangeMin;
@@ -24,12 +25,13 @@ public class Weapon_Base : MonoBehaviour
         Behaviour b = ownerCharacter.StartBehaviour(AttackBehaviour.AnimationName, AttackBehaviour.Duration, AttackBehaviour.Type, AttackBehaviour.EventTiming);
         b.BehaviourTimingEvent += OnBehaviourTiming;     
     }
-    public virtual float GetDamage()
+    public virtual int GetDamage()
     {
-        float result = BaseDamage;
-        result *= ownerCharacter.CState.GetDamageBuff() + 1;
+        int result = BaseDamage;
+        result = (int)(result * (ownerCharacter.CState.GetDamageBuff() + 1));
         return result;
     }
+
     protected virtual void OnBehaviourTiming(Behaviour Behaviour, int Index)
     {        
     }

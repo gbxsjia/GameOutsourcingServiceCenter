@@ -25,9 +25,12 @@ public class Weapon_Shooter :Weapon_Base
         Vector3 attackRight = Quaternion.Euler(0, 90, 0) * AttackDirection;
 
         Quaternion bulletRotation = attackRotation * Quaternion.Euler(0, ShootInfos[BulletIndex].AngleOffset, 0);
-        Vector3 SpawnPosition = transform.position + AttackDirection * 0.5f + Vector3.up * 0.5f;
+        Vector3 SpawnPosition = ownerCharacter.transform.position + AttackDirection * 0.5f + Vector3.up * 0.5f;
         SpawnPosition += AttackDirection * ShootInfos[BulletIndex].PositionOffset.z + attackRight * ShootInfos[BulletIndex].PositionOffset.x;
+
         GameObject g = Instantiate(ProjectilePrefab, SpawnPosition, bulletRotation);
+        g.GetComponent<Projectile_Base>().OnCreated(ownerCharacter, this);
+
         BulletIndex++;
     }
 }

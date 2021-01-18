@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(DamageReceiver))]
 public class CharacterState_Base : MonoBehaviour
 {
+    private DamageReceiver damageReceiver;
+
     [Header("基础属性")]
     public bool isAlive;
 
@@ -28,6 +31,9 @@ public class CharacterState_Base : MonoBehaviour
     }
     public void Initialize()
     {
+        damageReceiver = GetComponent<DamageReceiver>();
+        damageReceiver.TakeDamageEvent += TakeDamage;
+        damageReceiver.Camp = Camp;
         isAlive = true;
         HealthCurrent = HealthMax;
         WillPowerCurrent = WillPowerMax;
@@ -65,9 +71,3 @@ public class CharacterState_Base : MonoBehaviour
     }
 }
 
-public class DamageInfo
-{
-    public int damage;
-    public GameObject damageFrom;
-    public Character_Base instigator;
-}
