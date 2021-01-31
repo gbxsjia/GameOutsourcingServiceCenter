@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DamageReceiver : MonoBehaviour
 {
-    public int Camp;
+    public CharacterState_Base CState;
     public DRType DRType;
     public event System.Action<DamageInfo> TakeDamageEvent;
     public void TakeDamage(DamageInfo info) 

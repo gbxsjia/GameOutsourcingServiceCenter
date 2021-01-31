@@ -20,6 +20,8 @@ public class Projectile_Base : MonoBehaviour
     public bool CanDestroyWall;
     public bool DestroyOnHit;
 
+    public GameObject ExploadPrefab;
+
     public virtual void OnCreated(Character_Base owner, Weapon_Shooter weapon)
     {
         Owner = owner;
@@ -45,6 +47,11 @@ public class Projectile_Base : MonoBehaviour
     public void BulletDestroy()
     {
         Destroy(gameObject);
+        if (ExploadPrefab)
+        {
+            Instantiate(ExploadPrefab, transform.position, transform.rotation);
+        }
+     
     }
     public void BulletHit(GameObject g)
     {
@@ -63,7 +70,8 @@ public class Projectile_Base : MonoBehaviour
         switch (receiver.DRType)
         {
             case DRType.Character:
-                if (receiver.Camp != Owner.CState.Camp)
+               
+                if (receiver.CState.Camp != Owner.CState.Camp && receiver.CState.isAlive)
                 {
                     receiver.TakeDamage(MakeDamageInfo());
                     if (DestroyOnHit)

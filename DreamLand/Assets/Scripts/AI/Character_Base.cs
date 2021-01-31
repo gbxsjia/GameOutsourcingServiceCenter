@@ -19,6 +19,7 @@ public class Character_Base : MonoBehaviour
     public float JumpForce;
 
     // 状态
+    private bool isAlive=true;
     private bool onGround;
     private MoveMode moveMode= MoveMode.walk;
     private float currentSpeed;
@@ -54,16 +55,19 @@ public class Character_Base : MonoBehaviour
             equipmentManager = GetComponent<EquipmentManager>();
         }
         CState = GetComponent<CharacterState_Base>();
+        CState.DeathEvent += OnDeath;
         LastMoveDirection = transform.forward;
         SetMoveMode(MoveMode.walk);
 
         GameObject g = Instantiate(UIPrefab);
         g.GetComponent<UI_UnitBar>().SetOwner(this, CState);
     }
+
     private void Update()
     {
         CheckGround();
         UpdateVelocity();
+        Rotate();
 
         if (currentBehaviour!=null)
         {
@@ -91,6 +95,16 @@ public class Character_Base : MonoBehaviour
         equipmentManager.Weapon.AttackCommand(direction);
         SetOverrideDirection(direction);
     }
+    #region Events
+    private void OnDeath(DamageInfo obj)
+    {
+        animator.SetBool("alive", false);
+        isAlive = false;
+        animator.SetLayerWeight(1, 0);
+    }
+
+    #endregion
+
     #region Abilities
 
     public void Move(Vector3 Direction)
@@ -99,9 +113,8 @@ public class Character_Base : MonoBehaviour
         InputDirection = Direction;
         if (Direction != Vector3.zero)
         {
-            LastMoveDirection = Direction;
-            RotateTowards(transform.position + Direction);
-        }        
+            LastMoveDirection = Direction;        
+        }  
     }
     public void SetMoveMode(MoveMode mode)
     {
@@ -120,9 +133,13 @@ public class Character_Base : MonoBehaviour
         }
     }
     public void UpdateVelocity()
-    {    
-        Vector3 v = Vector3.MoveTowards(rb.velocity, InputDirection * currentSpeed, MoveAcceleration);
-        v.y = rb.velocity.y;
+    {
+        Vector3 v = Vector3.zero;
+        if (isAlive)
+        {
+            v = Vector3.MoveTowards(rb.velocity, InputDirection * currentSpeed, MoveAcceleration);
+            v.y = rb.velocity.y;
+        }      
         rb.velocity = v;
     }
     private void CheckGround()
@@ -141,7 +158,7 @@ public class Character_Base : MonoBehaviour
     }
     public void Jump(float force)
     {
-        if (onGround)
+        if (onGround && isAlive)
         {
             animator.SetTrigger("jump");
             rb.AddForce(Vector3.up * force,ForceMode.Impulse);
@@ -160,17 +177,35 @@ public class Character_Base : MonoBehaviour
         animator.SetBool("onGround", onGround);
     }
 
-    public float RotateTowards(Vector3 targetPos)
+    public float Rotate()
     {
-        Vector3 direction = targetPos - transform.position;
         if (currentBehaviour != null)
         {
-            direction = OverrideDirection;         
+            return Rotate(transform.position + OverrideDirection);
         }
-        direction.y = 0;
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, RotationSpeed*Time.deltaTime);
-        return Quaternion.Angle(transform.rotation, targetRotation);
+        if (InputDirection != Vector3.zero)
+        {
+            return Rotate(transform.position + LastMoveDirection);
+        }
+     
+        return 999;
+    }
+    public float Rotate(Vector3 targetPos)
+    {
+        if (isAlive)
+        {
+            Vector3 direction = targetPos - transform.position;
+
+            direction.y = 0;
+            if (direction.sqrMagnitude > 0)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
+                return Quaternion.Angle(transform.rotation, targetRotation);
+            }
+        }
+        return 999;  
+      
     }
     public void SetOverrideDirection(Vector3 direction)
     {
@@ -178,23 +213,37 @@ public class Character_Base : MonoBehaviour
     }
     public void PlayAnimation(string animationName)
     {
-        animator.CrossFade(animationName, 0.1f);
+        if (isAlive)
+        {
+            animator.CrossFade(animationName, 0.1f);
+        }
     }
-    public Behaviour StartBehaviour(string animName, float duration, BehaviourType type, float[] eventTiming)
+    public Behaviour StartBehaviour(string animName, float duration, BehaviourType type, float[] eventTiming, bool forceEnd = false)
     {
         Behaviour newBehaviour = new Behaviour(animName, duration, type, eventTiming);
-        return StartBehaviour(newBehaviour);
+        return StartBehaviour(newBehaviour, forceEnd);
     }
 
-    public Behaviour StartBehaviour(Behaviour behaviour)
+    public Behaviour StartBehaviour(Behaviour behaviour, bool forceEnd=false)
     {
-        if (currentBehaviour != null)
+        if (isAlive)
         {
-            InterruptBehaviour();
+            bool canStart = currentBehaviour == null;
+
+            if (currentBehaviour != null && forceEnd)
+            {
+                canStart = true;
+                InterruptBehaviour();
+            }
+
+            if (canStart)
+            {
+                currentBehaviour = behaviour;
+                currentBehaviour.StartBehaviour(this);
+                return behaviour;
+            }
         }
-        currentBehaviour = behaviour;
-        currentBehaviour.StartBehaviour(this);
-        return behaviour;
+        return null;
     }
     public void InterruptBehaviour()
     {

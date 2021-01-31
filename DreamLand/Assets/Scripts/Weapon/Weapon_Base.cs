@@ -23,7 +23,10 @@ public class Weapon_Base : MonoBehaviour
     {
         AttackDirection = direction;
         Behaviour b = ownerCharacter.StartBehaviour(AttackBehaviour.AnimationName, AttackBehaviour.Duration, AttackBehaviour.Type, AttackBehaviour.EventTiming);
-        b.BehaviourTimingEvent += OnBehaviourTiming;     
+        if (b != null)
+        {
+            b.BehaviourTimingEvent += OnBehaviourTiming;
+        }          
     }
     public virtual int GetDamage()
     {

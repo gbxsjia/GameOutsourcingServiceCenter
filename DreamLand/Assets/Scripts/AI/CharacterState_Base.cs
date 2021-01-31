@@ -33,7 +33,7 @@ public class CharacterState_Base : MonoBehaviour
     {
         damageReceiver = GetComponent<DamageReceiver>();
         damageReceiver.TakeDamageEvent += TakeDamage;
-        damageReceiver.Camp = Camp;
+        damageReceiver.CState = this;
         isAlive = true;
         HealthCurrent = HealthMax;
         WillPowerCurrent = WillPowerMax;
@@ -43,6 +43,7 @@ public class CharacterState_Base : MonoBehaviour
         HealthCurrent -= info.damage;
         if (HealthCurrent <= 0)
         {
+            isAlive = false;
             if (DeathEvent != null)
             {
                 DeathEvent(info);

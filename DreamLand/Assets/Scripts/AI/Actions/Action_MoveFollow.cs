@@ -35,7 +35,6 @@ public class Action_MoveFollow : AI_Action_Base
                 ActionFinish();
             }
             character.Move(Vector3.zero);
-            character.RotateTowards(Target.transform.position);
         }
         else
         {

@@ -124,7 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownerCharacter: {fileID: 0}
   AttackBehaviour:
-    AnimationName: 
+    AnimationName: Attack3
     Duration: 0.9
     Type: 0
     EventTiming:
@@ -142,14 +142,14 @@ MonoBehaviour:
     type: 3}
   ShootInfos:
   - AngleOffset: 0
-    PositionOffset: {x: -0.3, y: 0, z: 0}
+    PositionOffset: {x: -0.1, y: 0, z: 0}
   - AngleOffset: 0
-    PositionOffset: {x: 0.3, y: 0, z: 0}
+    PositionOffset: {x: 0.1, y: 0, z: 0}
   - AngleOffset: 0
-    PositionOffset: {x: -0.3, y: 0, z: 0}
+    PositionOffset: {x: -0.1, y: 0, z: 0}
   - AngleOffset: 0
-    PositionOffset: {x: 0.3, y: 0, z: 0}
+    PositionOffset: {x: 0.1, y: 0, z: 0}
   - AngleOffset: 0
-    PositionOffset: {x: -0.3, y: 0, z: 0}
+    PositionOffset: {x: -0.1, y: 0, z: 0}
   - AngleOffset: 0
-    PositionOffset: {x: 0.3, y: 0, z: 0}
+    PositionOffset: {x: 0.1, y: 0, z: 0}

@@ -93,6 +93,11 @@ PrefabInstance:
       propertyPath: ShootInfos.Array.data[2].AngleOffset
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 6030841390302473462, guid: 057afb9a98af3994fb4cab585531f0d8,
+        type: 3}
+      propertyPath: AttackBehaviour.AnimationName
+      value: Attack1
+      objectReference: {fileID: 0}
     - target: {fileID: 7052464589444405880, guid: 057afb9a98af3994fb4cab585531f0d8,
         type: 3}
       propertyPath: m_LocalPosition.x

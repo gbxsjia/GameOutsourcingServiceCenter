@@ -24,7 +24,7 @@ public class Action_ScaredJump : AI_Action_Base
 
         if (RotateToTransform)
         {
-            character.RotateTowards(RotateToTransform.position);
+            character.Rotate(RotateToTransform.position);
         }
         timer -= Time.deltaTime;
         if (timer <= 0)
