@@ -155,6 +155,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 1
+  JumpForce: 0
+  GroundContactCount: 0
 --- !u!54 &247245606
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -554,9 +556,9 @@ GameObject:
   - component: {fileID: 1224713286}
   - component: {fileID: 1224713285}
   - component: {fileID: 1224713284}
+  - component: {fileID: 1224713281}
   - component: {fileID: 1224713283}
   - component: {fileID: 1224713282}
-  - component: {fileID: 1224713281}
   m_Layer: 0
   m_Name: Comba
   m_TagString: Untagged
@@ -573,10 +575,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1224713280}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d3780a84aa936847a807fa436b0acf4, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c1fb1580f0d0a043b9dc031b2bead44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 1
+  MoveSpeed: 5
+  JumpForce: 0
+  GroundContactCount: 0
 --- !u!54 &1224713282
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -624,7 +628,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ba9a0e183946c9344992227784a9c109, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -661,8 +665,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1224713280}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.18, y: 0.55, z: -4.6}
-  m_LocalScale: {x: 1, y: 2.259, z: 1}
+  m_LocalPosition: {x: -3.18, y: 0.79, z: -4.6}
+  m_LocalScale: {x: 1, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -701,6 +705,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 1
+  JumpForce: 0
+  GroundContactCount: 0
 --- !u!54 &1569395571
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -825,6 +831,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 1
+  JumpForce: 0
+  GroundContactCount: 0
 --- !u!54 &1975396270
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -930,7 +938,7 @@ GameObject:
   - component: {fileID: 2013988247}
   - component: {fileID: 2013988246}
   m_Layer: 0
-  m_Name: Comba (1)
+  m_Name: Frog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -945,10 +953,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2013988245}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d3780a84aa936847a807fa436b0acf4, type: 3}
+  m_Script: {fileID: 11500000, guid: acf5b6d68a51bed47a84d27536487fbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 1
+  MoveSpeed: 10
+  JumpForce: 600
+  GroundContactCount: 0
 --- !u!54 &2013988247
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -996,7 +1006,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e36a9e6db32dca54dadd273a25918b13, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1033,8 +1043,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2013988245}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8, y: 0.55, z: 2.5}
-  m_LocalScale: {x: 1, y: 2.259, z: 1}
+  m_LocalPosition: {x: -2.8, y: -0.26, z: 2.5}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5

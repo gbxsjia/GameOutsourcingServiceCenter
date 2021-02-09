@@ -39,7 +39,7 @@ public class Character : MonoBehaviour
         
     }
 
-    void FixedUpdate()
+    void Update()
     {
         Vector3 newvelocity = rb.velocity;
 
