@@ -8,6 +8,10 @@ public class Character : MonoBehaviour
     public float MoveSpeed;
     protected Rigidbody rb;
 
+    public float JumpForce;
+    public int GroundContactCount;
+
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -34,4 +38,30 @@ public class Character : MonoBehaviour
     {
         
     }
+
+    void FixedUpdate()
+    {
+        Vector3 newvelocity = rb.velocity;
+
+        //跳跃
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (GroundContactCount > 0)
+            {
+                rb.AddForce(new Vector3(0, JumpForce, 0));
+            }
+        }
+    }
+
+    //跳跃碰撞检测
+    private void OnCollisionEnter(Collision collision)
+    {
+        GroundContactCount++;
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        GroundContactCount--;
+    }
+
+
 }
