@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Action_MoveFollow : AI_Action_Base
 {
-    Character_Base Target;
+    GameObject Target;
     float StopRange;
     float MinDuration;
     float timer;
-    public Action_MoveFollow(Character_Base target,float stopRange,float minDuration)
+    public Action_MoveFollow(GameObject target,float stopRange,float minDuration)
     {
         Target = target;
         StopRange = stopRange;
@@ -23,18 +23,18 @@ public class Action_MoveFollow : AI_Action_Base
     public override void ActionUpdate(AI_Base brain, Character_Base character)
     {
         base.ActionUpdate(brain, character);
-        if (Target == null || !Target.CState.isAlive)
+        if (Target == null)
         {
             ActionFinish();
         }
         Vector3 Direction = Target.transform.position - Character.transform.position;
         if (Direction.magnitude <= StopRange)
         {
+            character.Move(Vector3.zero);
             if (timer <= 0)
             {
                 ActionFinish();
-            }
-            character.Move(Vector3.zero);
+            }            
         }
         else
         {

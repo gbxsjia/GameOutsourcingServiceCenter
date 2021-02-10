@@ -30,7 +30,7 @@ public class AIPerception : MonoBehaviour
         else
         {
             Character_Base ch = other.GetComponent<Character_Base>();
-            if (ch)
+            if (ch && ch.CState.isAlive)
             {
                 CharactersInSight.Add(ch);
                 if (NewCharacterEnterEvent != null)

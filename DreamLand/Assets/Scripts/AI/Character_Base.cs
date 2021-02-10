@@ -109,6 +109,7 @@ public class Character_Base : MonoBehaviour
 
     public void Move(Vector3 Direction)
     {
+        Direction.y = 0;
         Direction.Normalize();
         InputDirection = Direction;
         if (Direction != Vector3.zero)

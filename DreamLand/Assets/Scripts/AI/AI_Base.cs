@@ -15,6 +15,8 @@ public class AI_Base : MonoBehaviour
 
     public WorkType workType;
 
+    public GameObject SharedTarget;
+
     private void Awake()
     {
         PossessCharacter(gameObject);
@@ -86,8 +88,11 @@ public class AI_Base : MonoBehaviour
                 }
                 break;
 
-            case WorkType.Guardian:
+            case WorkType.Patroller:
                 StartNewMission(new Mission_Patrol(Paths, 3));
+                break;
+            case WorkType.Guardian:
+                StartNewMission(new Mission_Guard(SharedTarget, 0, 2));
                 break;
         }
     }
@@ -97,5 +102,6 @@ public class AI_Base : MonoBehaviour
 public enum WorkType
 {
     Farmer,
-    Guardian
+    Guardian,
+    Patroller
 }

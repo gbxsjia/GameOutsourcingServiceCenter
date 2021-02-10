@@ -12,7 +12,7 @@ public class Mission_ChaseAttack : AI_Mission_Base
     public override void SetUpActions()
     {
         base.SetUpActions();
-        AddNewAction(new Action_MoveFollow(Enemy, ownerCharacter.GetAttackRange(), 1f));
+        AddNewAction(new Action_MoveFollow(Enemy.gameObject, ownerCharacter.GetAttackRange(), 1f));
         AddNewAction(new Action_Attack(Enemy.transform));
     }
     public override void ActionFinish(AI_Action_Base action, bool success)

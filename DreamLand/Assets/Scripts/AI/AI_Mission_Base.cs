@@ -61,19 +61,31 @@ public class AI_Mission_Base
         }
         else
         {
-            AchiveIndex++;
-            if (AchiveIndex >= AchivementCounts)
-            {
-                MissionEnd(ownerBrain, ownerCharacter);
-            }
-            else
-            {
-                SetUpActions();
-                ActionStart();
-            }
+            OnActionEmpty();
         }       
     }
-
+    public virtual void OnActionEmpty()
+    {
+        AchiveIndex++;
+        if (AchiveIndex >= AchivementCounts)
+        {
+            MissionEnd(ownerBrain, ownerCharacter);
+        }
+        else
+        {
+            SetUpActions();
+            ActionStart();
+        }
+    }
+    public virtual void AbortAllAction()
+    {
+        if (currentAction != null)
+        {
+            currentAction.ActionInterrupt(ownerBrain, ownerCharacter);
+            currentAction = null;
+        }
+        ActionList.Clear();
+    }
     public void AddNewAction(AI_Action_Base action)
     {
         ActionList.Add(action);
